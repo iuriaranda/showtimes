@@ -244,7 +244,7 @@ Showtimes.prototype._parseTheater = function ($, theater, alternate, theaterId) 
     }
     if (showtimes.showtime_tickets) theaterData.showtime_tickets = showtimes.showtime_tickets
 
-    return theaterData;
+    return theaterData
   }
 
   var movies = []
@@ -412,7 +412,6 @@ Showtimes.prototype._parseMovie = function ($, movie, alternate, movieId) {
  * @return {array}        Sorted and parsed array of movie showtimes.
  */
 Showtimes.prototype._parseShowtimes = function ($, thing) {
-  var showtime, match
   var meridiem = false
   var response = {}
 
@@ -435,13 +434,14 @@ Showtimes.prototype._parseShowtimes = function ($, thing) {
   }
 
   var target = thing.find('.times a.fl')
+  var showtimes
   if (target.length === 0) {
     // No ticket urls available, process only showtimes
-    var showtimes = thing.find('.times').text().split(' ')
+    showtimes = thing.find('.times').text().split(' ')
     response.showtimes = _.map(showtimes.reverse(), getTime.bind(this)).reverse()
   } else {
     // Ticket urls are available
-    var showtimes = target.map(function (i, el) {
+    showtimes = target.map(function (i, el) {
       var tickets_url = url.parse($(el).attr('href'), true)
 
       return {
@@ -451,11 +451,11 @@ Showtimes.prototype._parseShowtimes = function ($, thing) {
     }).get()
 
     response.showtime_tickets = {}
-    response.showtimes = _.map(showtimes.reverse(), (function (item) {
+    response.showtimes = _.map(showtimes.reverse(), function (item) {
       var time = getTime.bind(this)(item.time)
-      response.showtime_tickets[time] = item.url;
+      response.showtime_tickets[time] = item.url
       return time
-    }).bind(this)).reverse()
+    }.bind(this)).reverse()
   }
 
   return response
