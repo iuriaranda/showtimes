@@ -60,6 +60,9 @@ Showtimes.prototype.getTheaters = function () {
       return
     }
 
+    var location = $('#title_bar').text().match(/^Showtimes for (.+)$/)[1]
+    var day = $('#left_nav .section div b').first().text().match(/^›\s*(.+)$/)[1]
+
     $('.theater').each(function (i, theater) {
       var theaterData = api._parseTheater($, $(theater))
       if (theaterData.name.length === 0) {
@@ -71,7 +74,11 @@ Showtimes.prototype.getTheaters = function () {
 
     // No pages to paginate, so return the theaters back.
     if ($('#navbar td a:contains("Next")').length === 0 || api.page === api.pageLimit) {
-      cb(null, api.theaters)
+      cb(null, {
+        location: location,
+        date: day,
+        data: api.theaters
+      })
       return
     }
 
@@ -96,10 +103,17 @@ Showtimes.prototype.getTheater = function (theaterId, cb) {
       return
     }
 
+    var location = $('#title_bar').text().match(/^Showtimes for (.+)$/)[1]
+    var day = $('#left_nav .section div b').first().text().match(/^›\s*(.+)$/)[1]
+
     var theater = $('.theater')
     var theaterData = api._parseTheater($, theater, false, theaterId)
 
-    cb(null, theaterData)
+    cb(null, {
+      location: location,
+      date: day,
+      data: theaterData
+    })
   })
 }
 
@@ -136,6 +150,9 @@ Showtimes.prototype.getMovies = function () {
       return
     }
 
+    var location = $('#title_bar').text().match(/^Showtimes for (.+)$/)[1]
+    var day = $('#left_nav .section div b').first().text().match(/^›\s*(.+)$/)[1]
+
     var movieData
     $('.movie').each(function (i, movie) {
       movie = $(movie)
@@ -156,7 +173,11 @@ Showtimes.prototype.getMovies = function () {
 
     // No pages to paginate, so return the movies back.
     if ($('#navbar td a:contains("Next")').length === 0 || api.page === api.pageLimit) {
-      cb(null, api.movies)
+      cb(null, {
+        location: location,
+        date: day,
+        data: api.movies
+      })
       return
     }
 
@@ -192,7 +213,14 @@ Showtimes.prototype.getMovie = function (movieId, cb) {
       movieData.theaters.push(api._parseTheater($, $(theater), true))
     })
 
-    cb(null, movieData)
+    var location = $('#title_bar').text().match(/^Showtimes for (.+)$/)[1]
+    var day = $('#left_nav .section div b').first().text().match(/^›\s*(.+)$/)[1]
+
+    cb(null, {
+      location: location,
+      date: day,
+      data: movieData
+    })
   })
 }
 
