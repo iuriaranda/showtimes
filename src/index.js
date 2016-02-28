@@ -61,6 +61,9 @@ class showtimes {
         return
       }
 
+      var location = $('#title_bar').text().match(/^Showtimes for (.+)$/)[1]
+      var day = $('#left_nav .section div b').first().text().match(/^›\s*(.+)$/)[1]
+
       $('.theater').each((i, theater) => {
         var theaterData = api._parseTheater($, $(theater))
         if (theaterData.name.length === 0) {
@@ -72,7 +75,11 @@ class showtimes {
 
       // No pages to paginate, so return the theaters back.
       if ($('#navbar td a:contains("Next")').length === 0 || api.page === api.pageLimit) {
-        cb(null, api.theaters)
+        cb(null, {
+          location: location,
+          date: day,
+          data: api.theaters
+        })
         return
       }
 
@@ -97,10 +104,17 @@ class showtimes {
         return
       }
 
+      var location = $('#title_bar').text().match(/^Showtimes for (.+)$/)[1]
+      var day = $('#left_nav .section div b').first().text().match(/^›\s*(.+)$/)[1]
+
       var theater = $('.theater')
       var theaterData = api._parseTheater($, theater, false, theaterId)
 
-      cb(null, theaterData)
+      cb(null, {
+        location: location,
+        date: day,
+        data: theaterData
+      })
     })
   }
 
@@ -137,6 +151,9 @@ class showtimes {
         return
       }
 
+      var location = $('#title_bar').text().match(/^Showtimes for (.+)$/)[1]
+      var day = $('#left_nav .section div b').first().text().match(/^›\s*(.+)$/)[1]
+
       var movieData
       $('.movie').each((i, movie) => {
         movie = $(movie)
@@ -157,7 +174,11 @@ class showtimes {
 
       // No pages to paginate, so return the movies back.
       if ($('#navbar td a:contains("Next")').length === 0 || api.page === api.pageLimit) {
-        cb(null, api.movies)
+        cb(null, {
+          location: location,
+          date: day,
+          data: api.movies
+        })
         return
       }
 
@@ -193,7 +214,14 @@ class showtimes {
         movieData.theaters.push(api._parseTheater($, $(theater), true))
       })
 
-      cb(null, movieData)
+      var location = $('#title_bar').text().match(/^Showtimes for (.+)$/)[1]
+      var day = $('#left_nav .section div b').first().text().match(/^›\s*(.+)$/)[1]
+
+      cb(null, {
+        location: location,
+        date: day,
+        data: movieData
+      })
     })
   }
 
