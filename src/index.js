@@ -169,6 +169,10 @@ class showtimes {
           movieData.theaters.push(api._parseTheater($, $(theater), true))
         })
 
+        if (movie.find('.showtimes p.show_more').length) {
+          movieData.more_theaters = true;
+        }
+
         api.movies.push(movieData)
       })
 
